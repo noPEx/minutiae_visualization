@@ -4,11 +4,13 @@
 """
 	see.py : sees minutiae and plots it
 	blue,green and red is the order.
+
 """
+
+#2012 Soumya Mandi
 
 
 #! /usr/bin/python
-import networkx as nx,sys
 import math
 import copy
 import cv
@@ -30,7 +32,7 @@ def sort_2d( minutiaes ) :
 
 def read_minutiaes( ) :
 
-	f = open( sys.argv[1],'r' )
+	f = open( sys.argv[2],'r' )
 	lines = f.readlines()
 	f.close()
 	
@@ -79,20 +81,24 @@ def create_image( rgbImage,minutiaes ) :
 if __name__ == '__main__' :
 
 	if len( sys.argv ) < 3 :
-		print 'Correct Usage : python see.py textfile image'
+		print 'Correct Usage : python -? see.py textfile image'
 		exit()
 
 	minutiaes = read_minutiaes()
 	print 'sorted minutiaes from 2 are :',minutiaes
 
 	#image = create_image( minutiaes )
-	image = cv.LoadImage( sys.argv[2],cv.CV_LOAD_IMAGE_UNCHANGED )
+	image = cv.LoadImage( sys.argv[3],cv.CV_LOAD_IMAGE_UNCHANGED )
 
-	rgbImage = cv.CreateImage( ( image.width, image.height ),cv.IPL_DEPTH_8U,3 )
+	if sys.argv[1] == '-l' :
+		rgbImage = image
 
-	for h in range( rgbImage.height ):
-		for w in range( rgbImage.width ) :
-			rgbImage[h,w] = ( image[ h,w ],image[ h,w ],image[ h,w ] )
+	elif sys.argv[1] == '-s' :
+		rgbImage = cv.CreateImage( ( image.width, image.height ),cv.IPL_DEPTH_8U,3 )
+
+		for h in range( rgbImage.height ):
+			for w in range( rgbImage.width ) :
+				rgbImage[h,w] = ( image[ h,w ],image[ h,w ],image[ h,w ] )
 	
 	marked_image= create_image( rgbImage,minutiaes )
 	cv.SaveImage( 'rgbImage.bmp',marked_image )
