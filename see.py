@@ -35,6 +35,8 @@ def read_minutiaes( ) :
 	f = open( sys.argv[2],'r' )
 	lines = f.readlines()
 	f.close()
+
+	lines.pop( 0 )
 	
 	#print lines2
 	minutiaes = [ a.split()[ : 3 ] for a in lines ]
@@ -81,7 +83,7 @@ def create_image( rgbImage,minutiaes ) :
 if __name__ == '__main__' :
 
 	if len( sys.argv ) < 3 :
-		print 'Correct Usage : python -? see.py textfile image'
+		print 'Correct Usage : python see.py -? textfile image'
 		exit()
 
 	minutiaes = read_minutiaes()
